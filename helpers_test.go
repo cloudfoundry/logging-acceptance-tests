@@ -172,29 +172,6 @@ func ReadFromRLP(appID string, usePreferredTags bool) <-chan *v2.Envelope {
 	return msgChan
 }
 
-func ReadContainerFromRLP(appID string, usePreferredTags bool) []*v2.Envelope {
-	tlsConf, err := loggregator.NewEgressTLSConfig(
-		config.MetronTLSClientConfig.CAFile,
-		config.MetronTLSClientConfig.CertFile,
-		config.MetronTLSClientConfig.KeyFile,
-	)
-	Expect(err).NotTo(HaveOccurred())
-	creds := credentials.NewTLS(tlsConf)
-
-	conn, err := grpc.Dial(config.ReverseLogProxyAddr, grpc.WithTransportCredentials(creds))
-	Expect(err).NotTo(HaveOccurred())
-
-	client := v2.NewEgressQueryClient(conn)
-
-	ctx, _ := context.WithTimeout(context.Background(), time.Second)
-	resp, err := client.ContainerMetrics(ctx, &v2.ContainerMetricRequest{
-		UsePreferredTags: usePreferredTags,
-		SourceId:         appID,
-	})
-	Expect(err).ToNot(HaveOccurred())
-	return resp.Envelopes
-}
-
 func FindMatchingEnvelope(msgChan <-chan *events.Envelope, envelope *events.Envelope) *events.Envelope {
 	timeout := time.After(10 * time.Second)
 	for {
