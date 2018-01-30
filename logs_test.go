@@ -29,6 +29,7 @@ var _ = Describe("Logs", func() {
 			EmitToMetronV1(env)
 
 			tlsConfig := &tls.Config{InsecureSkipVerify: true}
+			tcRequired()
 			consumer := consumer.New(config.DopplerEndpoint, tlsConfig, nil)
 
 			getRecentLogs := func() []*events.LogMessage {
@@ -42,6 +43,7 @@ var _ = Describe("Logs", func() {
 
 		It("sends log messages for a specific app through the stream endpoint", func() {
 			appID := randAppID()
+			tcRequired()
 			msgChan, errorChan := ConnectToStream(appID)
 
 			env := createLogEnvelopeV1("Stream message", appID)
@@ -63,6 +65,7 @@ var _ = Describe("Logs", func() {
 			EmitToMetronV2(env)
 
 			tlsConfig := &tls.Config{InsecureSkipVerify: true}
+			tcRequired()
 			consumer := consumer.New(config.DopplerEndpoint, tlsConfig, nil)
 
 			getRecentLogs := func() []*events.LogMessage {
@@ -85,6 +88,7 @@ var _ = Describe("Logs", func() {
 
 		It("sends log messages for a specific app through the stream endpoint", func() {
 			appID := randAppID()
+			tcRequired()
 			msgChan, errorChan := ConnectToStream(appID)
 
 			env := createLogEnvelopeV2("Stream message", appID)

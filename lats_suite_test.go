@@ -77,3 +77,9 @@ func createContainerMetric(appId string) *events.Envelope {
 		Tags: map[string]string{"UniqueName": fmt.Sprintf("LATs-%d", time.Now().UnixNano())},
 	}
 }
+
+func tcRequired() {
+	if config.DopplerEndpoint == "" {
+		Skip("TrafficController is required to run this test")
+	}
+}

@@ -16,6 +16,7 @@ import (
 var _ = Describe("Sending HTTP events through loggregator", func() {
 	Context("When the instrumented handler receives a request", func() {
 		It("should emit an HttpStartStop through the firehose", func() {
+			tcRequired()
 			msgChan, errorChan := ConnectToFirehose()
 
 			udpEmitter, err := emitter.NewUdpEmitter(fmt.Sprintf("localhost:%d", config.DropsondePort))
@@ -52,6 +53,7 @@ var _ = Describe("Sending HTTP events through loggregator", func() {
 
 		It("should emit httpStartStop events for specific apps to the stream endpoint", func() {
 			id := "e0f50f22-d93a-11e7-9296-cec278b6b50a"
+			tcRequired()
 			msgChan, errorChan := ConnectToStream(id)
 
 			udpEmitter, err := emitter.NewUdpEmitter(fmt.Sprintf("localhost:%d", config.DropsondePort))

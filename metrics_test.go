@@ -13,6 +13,7 @@ var _ = Describe("Sending metrics through loggregator", func() {
 			errorChan <-chan error
 		)
 		BeforeEach(func() {
+			tcRequired()
 			msgChan, errorChan = ConnectToFirehose()
 		})
 
@@ -59,6 +60,7 @@ var _ = Describe("Sending metrics through loggregator", func() {
 
 	Describe("Stream", func() {
 		It("receives a container metric", func() {
+			tcRequired()
 			msgChan, errorChan := ConnectToStream("test-id")
 			envelope := createContainerMetric("test-id")
 			EmitToMetronV1(createContainerMetric("alternate-id"))
