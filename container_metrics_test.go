@@ -12,6 +12,7 @@ var _ = Describe("Container Metrics Endpoint", func() {
 		EmitToMetronV1(envelope)
 
 		f := func() []*events.ContainerMetric {
+			tcRequired()
 			return RequestContainerMetrics("test-id")
 		}
 		Eventually(f).Should(ContainElement(envelope.ContainerMetric))

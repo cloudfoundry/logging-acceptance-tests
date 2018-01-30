@@ -108,6 +108,7 @@ var _ = Describe("Firehose", func() {
 				})
 
 				BeforeEach(func() {
+					tcRequired()
 					reader, _ = SetUpConsumer()
 					msgs, errs = reader.Firehose(generateSubID(), "")
 					go readFromErrors(errs)
@@ -162,6 +163,7 @@ var _ = Describe("Firehose", func() {
 					BeforeEach(func() {
 						subID := generateSubID()
 						reader, _ = SetUpConsumer()
+						tcRequired()
 						msgs1, errs1 = reader.Firehose(subID, "")
 						msgs2, errs2 = reader.Firehose(subID, "")
 						go readFromErrors(errs1)
@@ -190,6 +192,7 @@ var _ = Describe("Firehose", func() {
 						BeforeEach(func() {
 							subID1 := generateSubID()
 							subID2 := generateSubID()
+							tcRequired()
 							reader, _ = SetUpConsumer()
 							msgs1, errs1 = reader.Firehose(subID1, "")
 							msgs2, errs2 = reader.Firehose(subID2, "")
@@ -266,6 +269,7 @@ var _ = Describe("Firehose", func() {
 						}
 
 						BeforeEach(func() {
+							tcRequired()
 							reader, _ = SetUpConsumer()
 
 							subIDa := generateSubID()
@@ -312,7 +316,6 @@ var _ = Describe("Firehose", func() {
 						})
 					})
 				})
-
 			})
 		})
 	})
@@ -320,6 +323,7 @@ var _ = Describe("Firehose", func() {
 	Describe("subscription reconnect", func() {
 		It("gets all of the messages after reconnect", func() {
 			By("establishing first consumer")
+			tcRequired()
 			consumer, _ := SetUpConsumer()
 			subscriptionID := generateSubID()
 			msgs, errs := consumer.FirehoseWithoutReconnect(subscriptionID, "")
