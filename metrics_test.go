@@ -47,7 +47,7 @@ var _ = Describe("Sending metrics through loggregator", func() {
 		})
 
 		It("receives a container metric", func() {
-			envelope := createContainerMetric("test-id")
+			envelope := createContainerMetric("7e6a0e79-4ac1-4521-95b7-a8e5ab5c7959")
 			EmitToMetronV1(envelope)
 
 			receivedEnvelope := FindMatchingEnvelope(msgChan, envelope)
@@ -59,12 +59,12 @@ var _ = Describe("Sending metrics through loggregator", func() {
 
 	Describe("Stream", func() {
 		It("receives a container metric", func() {
-			msgChan, errorChan := ConnectToStream("test-id")
-			envelope := createContainerMetric("test-id")
-			EmitToMetronV1(createContainerMetric("alternate-id"))
+			msgChan, errorChan := ConnectToStream("7e6a0e79-4ac1-4521-95b7-a8e5ab5c7959")
+			envelope := createContainerMetric("7e6a0e79-4ac1-4521-95b7-a8e5ab5c7959")
+			EmitToMetronV1(createContainerMetric("7b446f11-9c05-4aa4-8e17-eb830300d0ed"))
 			EmitToMetronV1(envelope)
 
-			receivedEnvelope, err := FindMatchingEnvelopeByID("test-id", msgChan)
+			receivedEnvelope, err := FindMatchingEnvelopeByID("7e6a0e79-4ac1-4521-95b7-a8e5ab5c7959", msgChan)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(receivedEnvelope).NotTo(BeNil())
 

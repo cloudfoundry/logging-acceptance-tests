@@ -1,9 +1,10 @@
 package lats_test
 
 import (
+	"crypto/rand"
 	"crypto/tls"
 	"fmt"
-	"math/rand"
+	"io"
 	"reflect"
 	"time"
 
@@ -221,5 +222,10 @@ func createLogEnvelopeV2(message, appID string) *v2.Envelope {
 }
 
 func randAppID() string {
-	return fmt.Sprintf("lats - %d", rand.Int63())
+	uuid := make([]byte, 16)
+	n, err := io.ReadFull(rand.Reader, uuid)
+	if n != len(uuid) || err != nil {
+		panic(err)
+	}
+	return fmt.Sprintf("%x-%x-%x-%x-%x", uuid[0:4], uuid[4:6], uuid[6:8], uuid[8:10], uuid[10:])
 }
