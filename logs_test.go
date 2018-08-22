@@ -26,19 +26,25 @@ var _ = Describe("Logs", func() {
 	Describe("emit v1 and consume via traffic controller", func() {
 		It("gets through recent logs", func() {
 			appID := randAppID()
-			env := createLogEnvelopeV1("Recent log message", appID)
+			logString := "Recent log message"
+			env := createLogEnvelopeV1(logString, appID)
 			EmitToMetronV1(env)
 
 			tlsConfig := &tls.Config{InsecureSkipVerify: true}
 			consumer := consumer.New(config.DopplerEndpoint, tlsConfig, nil)
 
-			getRecentLogs := func() []*events.LogMessage {
+			getRecentLogs := func() bool {
 				envelopes, err := consumer.RecentLogs(appID, "")
 				Expect(err).NotTo(HaveOccurred())
-				return envelopes
+				for _, envelope := range envelopes {
+					if envelope.GetAppId() == appID && string(envelope.GetMessage()) == logString {
+						return true
+					}
+				}
+				return false
 			}
 
-			Eventually(getRecentLogs).Should(ContainElement(env.LogMessage))
+			Eventually(getRecentLogs).Should(BeTrue())
 		})
 
 		It("sends log messages for a specific app through the stream endpoint", func() {
