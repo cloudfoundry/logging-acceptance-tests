@@ -2,6 +2,7 @@ package lats_test
 
 import (
 	"github.com/cloudfoundry/sonde-go/events"
+	"github.com/gogo/protobuf/proto"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -26,6 +27,11 @@ var _ = Describe("Sending metrics through loggregator", func() {
 
 			receivedEnvelope := FindMatchingEnvelope(msgChan, envelope)
 			Expect(receivedEnvelope).NotTo(BeNil())
+
+			Expect(receivedEnvelope.GetCounterEvent().GetTotal()).To(Equal(envelope.GetCounterEvent().GetDelta()))
+
+			// Clear it so the next assertion is valid
+			receivedEnvelope.GetCounterEvent().Total = proto.Uint64(0)
 
 			Expect(receivedEnvelope.GetCounterEvent()).To(Equal(envelope.GetCounterEvent()))
 			EmitToMetronV1(envelope)
