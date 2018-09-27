@@ -45,9 +45,9 @@ func Load() (*TestConfig, error) {
 
 	config := &TestConfig{
 		MetronTLSClientConfig: TLSClientConfig{
-			CAFile:   "/var/vcap/jobs/metron_agent/config/certs/loggregator_ca.crt",
-			CertFile: "/var/vcap/jobs/metron_agent/config/certs/metron_agent.crt",
-			KeyFile:  "/var/vcap/jobs/metron_agent/config/certs/metron_agent.key",
+			CAFile:   "/var/vcap/jobs/loggregator_agent/config/certs/loggregator_ca.crt",
+			CertFile: "/var/vcap/jobs/loggregator_agent/config/certs/loggregator_agent.crt",
+			KeyFile:  "/var/vcap/jobs/loggregator_agent/config/certs/loggregator_agent.key",
 		},
 		ReverseLogProxyAddr: "reverse-log-proxy.service.cf.internal:8082",
 	}
