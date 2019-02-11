@@ -128,7 +128,7 @@ var _ = Describe("Logs", func() {
 				Type:    v2.Log_OUT,
 			}
 
-			giveUp := time.NewTimer(5 * time.Second)
+			giveUp := time.NewTimer(10 * time.Second)
 			for {
 				select {
 				case e := <-msgChan:
